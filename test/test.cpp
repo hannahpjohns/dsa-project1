@@ -1,53 +1,125 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
+#include <vector>
+#include <format>
+#include <sstream>
 
-// uncomment and replace the following with your own headers
-// #include "AVL.h"
+#include "tree.h"
 
-using namespace std;
+//using namespace std;
+// Hannah Johns
+// UFID 70480080
 
-// the syntax for defining a test is below. It is important for the name to be unique, but you can group multiple tests with [tags]. A test can have [multiple][tags] using that syntax.
-TEST_CASE("Example Test Name - Change me!", "[flag]"){
-	// instantiate any class members that you need to test here
-	int one = 1;
-
-	// anything that evaluates to false in a REQUIRE block will result in a failing test 
-	REQUIRE(one == 0); // fix me!
-
-	// all REQUIRE blocks must evaluate to true for the whole test to pass
-	REQUIRE(false); // also fix me!
-}
+//
+// TEST_CASE("Test 1", "[flag]"){
+// 	Tree test = Tree();
+//
+// 	SECTION("letters") {
+// 		test.insert(12322423, "test"); //isn't testing letters
+//
+// 	}
+// 	SECTION("7-digit") {
+// 		test.insert(1234567, "test");
+//
+// 	}
+// 	SECTION("9-digit") {
+// 		test.insert(123456789), 'test';
+// 	}
+// 	SECTION("duplicate") {
+// 		test.insert(12345678);
+// 		test.insert(12345678);
+// 	}
+//
+//
+//
+// }
 
 TEST_CASE("Test 2", "[flag]"){
 	// you can also use "sections" to share setup code between tests, for example:
-	int one = 1;
+	int one = 11111111;
+	int two = 22222222;
+	int three = 33333333;
+	Tree test = Tree();
+	std::vector<int> expectedOutput = {two, one, three};
 
-	SECTION("num is 2") {
-		int num = one + 1;
-		REQUIRE(num == 2);
+	SECTION("RR") {
+		test.insert(one, "test1");
+		test.insert(two, "test2");
+		test.insert(three, "test3");
+
+		test.printLevelcount();
+		// should equal 2
+
+
+		//REQUIRE(count == 2);
 	};
 
-	SECTION("num is 3") {
-		int num = one + 2;
-		REQUIRE(num == 3);
+	SECTION("LL") {
+		test.insert(three, "test 3");
+		test.insert(two, "test 2");
+		test.insert(one, "test 1");
+
+		test.printLevelcount();
+	};
+	SECTION("LR") {
+		test.insert(three, "test 3");
+		test.insert(one, "test 1");
+		test.insert(two, "test 2");
+		test.printLevelcount();
+	};
+	SECTION("RL") {
+		test.insert(one, "test 1");
+		test.insert(three, "test 3");
+		test.insert(two, "test 2");
+		test.printLevelcount();
 	};
 
-	// each section runs the setup code independently to ensure that they don't affect each other
+
 }
 
-// you must write 5 unique, meaningful tests for credit on the testing portion of this project!
 
-// the provided test from the template is below.
+TEST_CASE("Delete Inorder", "[flag]"){
+	Tree test = Tree();
 
-TEST_CASE("Example BST Insert", "[flag]"){
-	/*
-		MyAVLTree tree;   // Create a Tree object
-		tree.insert(3);
-		tree.insert(2);
-		tree.insert(1);
-		std::vector<int> actualOutput = tree.inorder();
-		std::vector<int> expectedOutput = {1, 2, 3};
-		REQUIRE(expectedOutput.size() == actualOutput.size());
-		REQUIRE(actualOutput == expectedOutput);
-	*/
+	for(int j = 0; j < 100; j++) {
+		test.insert(10000000 + j, "test");
+	}
+	for(int i = 0; i < 90; i++) {
+		test.removeInorder(100 - i);
+	}
+
+	std::stringstream buffer;
+	std::streambuf* oldCoutBuffer = std::cout.rdbuf(buffer.rdbuf());
+
+	test.printInorder();
+	buffer << "[end]";
+
+	std::cout.rdbuf(oldCoutBuffer);
+	INFO("inorder: " << buffer.str());
+	REQUIRE(false);        // fails → Catch prints the INFO above
+
+
 }
+
+// TEST_CASE("Large Tree", "[flag]"){
+// 	Tree inputTree;
+// 	std::vector<string> expectedOutput, actualOutput;
+// 	int start = 10000000;
+//
+// 	for(int i = 0; i < 100; i++)
+// 	{
+// 		start += i;
+// 		if (std::count(expectedOutput.begin(), expectedOutput.end(), start) == 0)
+// 		{
+// 			expectedOutput.push_back("true");
+// 			inputTree.insert(start, std::format("test{}", i));
+// 		}
+// 	}
+//
+// 	actualOutput = inputTree.inOrder();
+// 	REQUIRE(expectedOutput.size() == actualOutput.size());
+// 	REQUIRE_FALSE(expectedOutput == actualOutput);    //This assertion can be wrong. Don't use
+// 	std::sort(expectedOutput.begin(), expectedOutput.end());
+// 	REQUIRE(expectedOutput == actualOutput);
+//
+// }
